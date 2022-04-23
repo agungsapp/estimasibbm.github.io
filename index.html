@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@500&family=Montserrat&family=Pacifico&family=Source+Sans+Pro:wght@700&display=swap" rel="stylesheet">
+    <title>Estimasi BBM | by agung.sapp</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <style>
+        body{
+            background-color: rgb(38, 38, 38);
+        }
+        .container{
+            width: 50%;
+            margin: 5rem auto;
+            border: 3px solid #F1E0AC;
+            border-radius: 8px;
+            background-color: #495371;
+        }
+        .jarak {
+            width: 70%;
+        }
+        .row h1 {
+            font-family: 'Akshar', sans-serif;
+            margin-top: 2rem;
+            color: #F1E0AC;
+        }
+        .input-group-text {
+            background-color: #1C658C;
+            color: #F1E0AC ;
+        }
+        .btn-outline-primary, .btn-outline-success {
+            color: #F1E0AC;
+            border: 2px solid #F1E0AC;
+        }
+        .jarak .form-control {
+            background-color: #EEEEEE;
+        }
+        .tampilan .cream {
+            color: #F1E0AC;
+        }
+        #btn {
+            font-family: 'Akshar', sans-serif;
+            margin-bottom: 2rem;
+        }
+        hr {
+            border: 3px solid #F1E0AC;
+        }
+        .cream h3{
+            margin-left: 2rem;
+        }
+
+
+        @media screen and (max-width:600px) {
+            .container {
+                width: 100%;
+            }
+            .jarak {
+                width: 100%;
+            }
+            .btn-group label {
+                font-size: 10px;
+            }
+            #btn {
+            font-family: 'Akshar', sans-serif;
+            font-size: 14px;
+        }
+        }
+    </style>
+
+  </head>
+  <body>
+      <div class="container">
+          <div class="row text-center text-white">
+              <h1>Perhitungan Estimasi BBM mobil</h1>
+          </div>
+          <div class="row mt-5 d-flex justify-content-center">
+              <!-- field input jarak -->
+            <div class="jarak input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm" >Jarak Tempuh :</span>
+                <input id="jarak" type="text" class="form-control" aria-label="Sizing example input" placeholder="masukan jarak tempuh dalam satuan kilometer . . ." aria-describedby="inputGroup-sizing-sm">
+            </div>
+            <!-- radio button -->
+            <div class="radio-button d-flex justify-content-center">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input value="0.09" type="radio" class="btn-check" name="mobil" id="mobil1" autocomplete="off">
+                    <label class="btn btn-outline-light" for="mobil1">Avanza/Xenia</label>
+                  
+                    <input value="0.05" type="radio" class="btn-check" name="mobil" id="mobil2" autocomplete="off">
+                    <label class="btn btn-outline-light" for="mobil2">Agya/Ayla</label>
+
+                    <input value="0.06" type="radio" class="btn-check" name="mobil" id="mobil3" autocomplete="off">
+                    <label class="btn btn-outline-light" for="mobil3">Honda Brio</label>
+                  
+                    <input value="0.08" type="radio" class="btn-check" name="mobil" id="mobil4" autocomplete="off">
+                    <label class="btn btn-outline-light" for="mobil4">Honda Mobilio</label>
+                  </div>
+            </div>
+
+            <div class="bbm mt-4">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input value="12.750" type="radio" class="btn-check" name="bbm" id="bbm1" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="bbm1">Pertamax</label>
+                  
+                    <input value="7.650" type="radio" class="btn-check pertalite" name="bbm" id="bbm2" autocomplete="off">
+                    <label class="btn btn-outline-success" for="bbm2">Pertalite</label>
+
+                  </div>
+            </div>
+
+            <button id="btn" style="width: 20%;" type="button" onclick="hitung()" class="btn btn-danger mt-4">Hitung</button>
+            <hr>
+
+            <div class="tampilan mb-4">
+                <div class="harga cream d-flex">
+                    <span><i class="fa-solid fa-money-bill-wave fa-2x"></i> =</span>
+                    <h3 id="harga"></h3>
+                    <h4>Rupiah</h4>
+                </div>
+                <div class="liter cream d-flex">
+                    <span><i class="fa-solid fa-gas-pump fa-2x"></i> =</span>
+                    <h3 id="liter"></h3>
+                    <h4>Liter</h4>
+                </div>
+            </div>
+          </div>
+      </div>
+
+            <!-- footer -->
+            <div class="footer text-center card-footer bg-light shadow-lg">
+                <footer class="fw-bold" style="text-transform: capitalize;">
+                  Create with <i class="fa-solid fa-heart text-danger"></i> by agung saputra
+                </footer>
+              </div>
+              <!-- footer end -->
+      <script>
+          var kendaraan = 0;
+          var bbm = 0;
+        //   mengambil value dari radio button
+          $(document).ready(function () {
+          $("button[type='button']").click(function () {
+            var radioValue = $("input[name='mobil']:checked").val();
+            if (radioValue) {
+                kendaraan = radioValue;
+            }
+          });
+        });
+        // mengambil value bbm
+        $(document).ready(function () {
+          $("button[type='button']").click(function () {
+            bbmValue = $("input[name='bbm']:checked").val();
+            if (bbmValue) {
+                bbmValue = bbmValue;
+            }
+          });
+        });
+
+        // melakukan function operasi perhitungan
+        function hitung() {
+            var jarak = document.getElementById('jarak').value;
+            var bbm = bbmValue;
+            var liter = jarak * kendaraan;
+            var biaya = liter * bbm;
+            var akhirbiaya = Math.ceil(biaya);
+            var akhirliter = Math.ceil(liter)
+            document.getElementById('harga').innerHTML=akhirbiaya;
+            document.getElementById('liter').innerHTML=akhirliter;
+        }
+      </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
+</html>
